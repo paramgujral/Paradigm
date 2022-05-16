@@ -139,13 +139,13 @@ export class WindowDesign {
         }
         
         if(windowAccessories.exteriorTrimApplication != undefined){
-            let elem = `//div[text() = "//label[text()="${exteriorTrimApplication}"]//input"]`
+            let elem = `//label[text()='${windowAccessories.exteriorTrimApplication}']/input`
             await click(this.page, elem, "Exterior Trim Application");
             await this.page.waitForTimeout(3000);
         }
 
         if(windowAccessories.wallReturn != undefined){
-            let elem = `//div[text() = "${windowAccessories.wallReturn}"]`
+            let elem = `//div[text()='${windowAccessories.wallReturn}']`
             await click(this.page, elem, "Wall Return");
             await this.page.waitForTimeout(3000);
         }
