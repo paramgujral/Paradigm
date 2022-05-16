@@ -1,0 +1,22 @@
+{
+  "name": "playwright-pom-paradigm",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "npx playwright test",
+    "sequentialinsinglebrowser": "npx playwright test --workers=1",
+    "parallelinsinglebrowser": "npx playwright test",
+    "Report": "allure serve allure-results"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@playwright/test": "^1.21.1",
+    "playwright": "^1.21.1"
+  },
+  "dependencies": {
+    "allure-playwright": "^2.0.0-beta.15"
+  }
+}
