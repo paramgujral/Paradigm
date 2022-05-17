@@ -44,7 +44,7 @@ export const testData = {
             wallReturn              : '1/2" - 5/8" Applied',
         },
         windowAccessories2:{
-            screen                  : 'High Visiblility Fiberglas',
+            screen                  : 'High Visibility Fiberglass',
             headExpander            : 'Yes',
         },
 

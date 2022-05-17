@@ -149,6 +149,13 @@ export class WindowDesign {
             await click(this.page, elem, "Wall Return");
             await this.page.waitForTimeout(3000);
         }
+
+        if(windowAccessories.headExpander != undefined){
+            let elem = `//label[text()='${windowAccessories.headExpander}']/input[@type='radio']`
+            await click(this.page, elem, "Head Expander");
+            await this.page.waitForTimeout(3000);
+        }
+
     }
     
 }
