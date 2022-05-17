@@ -152,7 +152,7 @@ export class WindowDesign {
 
         if(windowAccessories.headExpander != undefined){
             let elem = `//label[text()='${windowAccessories.headExpander}']/input[@type='radio']`
-            await click(this.page, elem, "Head Expander");
+            await clickFirst(this.page, elem, "Head Expander");
             await this.page.waitForTimeout(3000);
         }
 
