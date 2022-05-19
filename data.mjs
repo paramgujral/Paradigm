@@ -47,8 +47,15 @@ export const testData = {
             screen                  : 'High Visibility Fiberglass',
             headExpander            : 'Yes',
         },
-
-
-    }
+    },
+    skuCodes:[
+        4040885,
+        4045976
+    ],
+    desc:[
+        'Vinyl Single Hung Window',
+        'H Aluminum Clad Pine Double Hung Window',
+        'QWERT123'
+    ],
     
 }
