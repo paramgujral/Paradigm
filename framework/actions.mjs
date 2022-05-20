@@ -98,6 +98,18 @@ export async function inputKeyboard(page, locator, value) {
 }
 
 
+export async function simulateEnterKeyPress(page) {
+    try {
+        await test.step("able to simulate pressing enter", async () => {
+            await page.keyboard.type('Enter');
+
+        });
+    } catch (error) {
+        await test.step("unable to simulate pressing enter ", async () => { });
+    }
+}
+
+
 export async function selectValueInDropdown(page, locator, value, dropdownName) {
     try {
         await test.step("able to select value " + value + " in dropdown " + dropdownName + "", async () => {
@@ -134,7 +146,6 @@ export async function getText(page, locator, logname) {
 }
 
 
-
 //Assertions
 
 export async function verifyText(page, locator, value, logname) {
@@ -152,7 +163,7 @@ export async function verifyElementPresent(page, locator, logname) {
     try {
         await test.step(logname + " is available", async () => {
             //await expect(page.locator(locator)).toBeVisible();
-            await page.waitForSelector(locator, { timeout: 10000 })
+            await page.waitForSelector(locator, { timeout: 20000 })
         });
     } catch (error) {
         console.log(error.message);

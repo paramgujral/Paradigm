@@ -1,18 +1,27 @@
 import {click, compareText, inputKeyboard, verifySubString, verifyLength, verifyLengthGreaterThan, 
     getText, waitAndClick, verifyText, verifyElementPresent, verifyElementAttribute, 
-    countElement, sendKeys} from '../framework/actions.mjs';
+    countElement, sendKeys, simulateEnterKeyPress} from '../framework/actions.mjs';
 
 export class MostPopular {
     constructor(page) {
         this.page = page;
     }
     get userName () { return '//li[@class="dropdown"]/a' }
-
+    
+    get desingTabHightlighted () { return '//li[@class="active menards-design"]' }
+    get summaryTab () { return '//a[text()="Summary"]' }
+    get summaryTabHightlighted () { return '//li[@class="active menards-summary"]' }
+    get closeSaveDesignPopup () { return '//form[@class="form-horizontal design-modal"]/div[@class="modal-header"]/button' }
+    get deleteItem() { return '//button[@title="Delete"]'}
+    get messageAfterDelete() { return '//p[text()="Click Continue Shopping to get started"]' }
+    get continueShoping() { return '//a[text()="Continue Shopping"]' }
 
     get searchSKUNumber () { return '//input[@placeholder="SKU Number"]'}
     get searchSKUDescription () { return '//input[@placeholder="SKU Description"]'}
     get searchButton ()  { return '//button[text() = "Search SKUs"]' }
     get resetButton ()  { return '//button[text() = "Reset"]'}
+
+    get noRecord () { return '//td[text()="No Results"]'}
 
     get skuRecords () { return '//table[@class = "table table-hover table-condensed sku-grid"]//tbody/tr'}
     get firstRecodSKUNo () { return '//tbody/tr[1]/td[1]'};
@@ -29,6 +38,12 @@ export class MostPopular {
     get currentPageButton() { return '//a[contains(@aria-label, "current page")]/parent::li/a'}
     get pageBreak() { return '//li[@class="break"]'}
 
+    async navigatetToSummay(){
+        await click(this.page, this.summaryTab, "Summary Tab");
+        await this.page.waitForTimeout(3000);
+        await verifyElementPresent(this.page, this.summaryTabHightlighted, "Highlighted Summary Tab");
+    }
+
     
     async verifyDesignTabHighlighted(){
         await verifyElementPresent(this.page, this.desingTabHightlighted, "Highlighted Design Tab")
@@ -39,6 +54,9 @@ export class MostPopular {
     }
 
     async verifySKUOnPage(){
+
+        await click(this.page, this.resetButton, "Reset");
+        await this.page.waitForTimeout(3000);
 
         await this.page.waitForSelector(this.skuRecords, { timeout: 10000 })    
         //let recordCount = this.page.locator(this.skuRecords).count();
@@ -129,7 +147,38 @@ export class MostPopular {
                 }
             }
             await click(this.page, this.resetButton, "Reset");
+        } 
+    }
+
+    async verifySearchSKUNoRecord(searchCriteria, searchString){
+        if(searchCriteria == 'SKUCode'){
+            await sendKeys(this.page, this.searchSKUNumber, searchString.toString());
+        }else if(searchCriteria = 'SKUDesc'){
+            await sendKeys(this.page, this.searchSKUDescription, searchString);
         }
-        
+        await this.page.waitForTimeout(2000);
+        await click(this.page, this.searchButton, "Search Button");
+        await this.page.waitForTimeout(5000);
+        await verifyElementPresent(this.page, this.noRecord, "No Record");
+        await click(this.page, this.resetButton, "Reset");
+    }
+
+    async addSKU(){
+        let recordSKUDescValue = await this.page.locator(this.firstRecodSKUDesc).innerText();
+        await click(this.page, this.firstRecodSKUAdd, "Add SKU");
+        await this.page.waitForTimeout(5000);
+        await this.navigatetToSummay();
+        await waitAndClick(this.page, this.closeSaveDesignPopup, "Close save design form")
+        let summaryDescription = `//span[text() = ' ${recordSKUDescValue}']`;
+        await verifyElementPresent(this.page, summaryDescription, "SKU Description in Summary")
+    }
+
+    async deleteAndContinueShoping(){
+        await click(this.page, this.deleteItem, "Delete items");
+        await simulateEnterKeyPress(this.page);
+        // await this.page.waitForTimeout(5000);
+        await verifyElementPresent(this.page, this.messageAfterDelete, "Click on continue shoping")
+        await click(this.page, this.continueShoping, "Continmue Shoping");
+        await this.verifyDesignTabHighlighted();
     }
 }

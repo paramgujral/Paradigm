@@ -55,7 +55,18 @@ export const testData = {
     desc:[
         'Vinyl Single Hung Window',
         'H Aluminum Clad Pine Double Hung Window',
-        'QWERT123'
+        '24-',
+        '1/4"',
     ],
+    invalidSKUCode                  : 3322110,
+    invalidSKUDesc                  : 'qwert',
+    customWindowWithNailing         : 'With Nailing Flange',
+    customeWithoutNailing           : 'Without Nailing Flange',
+    customeWindowType:{
+        windowMaterial          : 'Vinyl Interior & Vinyl Exterior',
+        windowOperate           : 'Single Hung Windows',
+        windowjoined            : '1-Wide',
+        productSeries           : 'Select 250 Vinyl'  
+    },
     
 }
