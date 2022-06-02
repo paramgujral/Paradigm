@@ -43,10 +43,12 @@ export const testData = {
             exteriorTrimApplication : 'Factory Applied',
             wallReturn              : '1/2" - 5/8" Applied',
         },
+        itemDescription1             : 'Crestline Select 250 Windows 40 W x 45 H Single Hung',
         windowAccessories2:{
             screen                  : 'High Visibility Fiberglass',
             headExpander            : 'Yes',
         },
+        itemDescription2             : 'Crestline Select 250 Replacement Windows 40 W x 45 H Single Hung',
     },
     skuCodes:[
         4040885,
@@ -61,12 +63,29 @@ export const testData = {
     invalidSKUCode                  : 3322110,
     invalidSKUDesc                  : 'qwert',
     customWindowWithNailing         : 'With Nailing Flange',
-    customeWithoutNailing           : 'Without Nailing Flange',
-    customeWindowType:{
+    CustomWithoutNailing           : 'Without Nailing Flange',
+    CustomWindowType:{
         windowMaterial          : 'Vinyl Interior & Vinyl Exterior',
         windowOperate           : 'Single Hung Windows',
         windowjoined            : '1-Wide',
         productSeries           : 'Select 250 Vinyl'  
     },
+    roomName                    : 'Living Room',
+    partNameToAddPart           : 'Crestline Select 500 1" Z-Flange White 174"',
+    partNameSearch              : 'Crestline Select 500',
+
+    leftNavFilter1:
+            [
+                {
+                    filterName      : 'Wood Interior & Vinyl Exterior', 
+                    partNumber      : '943606',
+                    partName        : 'Crestline Select 500 / Elite Premium Clad Handle Extension Brushed Nickel PVD',
+                },
+                {
+                    filterName      : 'Wood Interior & Vinyl Exterior', 
+                    partNumber      : '943607',
+                    partName        : 'Crestline Select 500 / Elite Premium Clad Handle Extension Bright Brass PVD',
+                },
+            ]
     
-}
+    }

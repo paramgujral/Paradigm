@@ -35,6 +35,19 @@ export async function clickFirst(page, address, log) {
     }
 }
 
+
+export async function clickVisible(page, address, log) {
+    try {
+        await test.step("able to click on " + log + "", async () => {
+            const locator = page.locator(address >> 'visible=true');
+            await locator.click();
+        });
+
+    } catch (error) {
+        await test.step("unable to click on " + log + "", async () => { });
+    }
+}
+
 export async function waitAndClick(page, address, log) {
     try {
         await test.step("able to click on " + log + "", async () => {
@@ -134,6 +147,24 @@ export async function scrollToElement(page, locator, logname) {
 }
 
 
+export async function getRandomNumber() {
+    try {
+            return Math.floor((Math.random() * 10000) + 1);
+    } catch (error) {
+        console.log(error.message);
+    }
+}
+
+export async function addInResult(page, message, value) {
+    try {
+        await test.step(message + " " + value, async () => {
+        });
+    } catch (error) {
+        console.log(error.message);
+    }
+}
+
+
 export async function getText(page, locator, logname) {
     try {
         await test.step("the text of " + logname +" is ", async () => {
@@ -144,7 +175,6 @@ export async function getText(page, locator, logname) {
         console.log(error.message);
     }
 }
-
 
 //Assertions
 
@@ -171,6 +201,19 @@ export async function verifyElementPresent(page, locator, logname) {
     }
 }
 
+export async function countElement(page, locator, logname) {
+    try {
+        let count=0;
+        await test.step(logname + " has " + count + " instances", async () => {
+            await page.waitForSelector(locator, { timeout: 20000 })
+            count = await page.$$(locator).length;
+        });
+    } catch (error) {
+        console.log(error.message);
+    await test.step(logname + " isn't available", async () => { });
+    }
+}
+
 
 export async function verifyElementAttribute(page, locator, attribute, value, logname) {
     try {
@@ -180,19 +223,6 @@ export async function verifyElementAttribute(page, locator, attribute, value, lo
         });
     } catch (error) {
     await test.step(logname + " has different value - " + value +" for attribute " +attribute, async () => { });
-    }
-}
-
-
-export async function countElement(page, locator, logname) {
-    try {
-        let count = 0;
-        await test.step(logname + " has " + count + " " + +logname, async () => {
-            await page.waitForSelector(locator, { timeout: 5000 })
-            return page.locator(locator).count();
-        });
-    } catch (error) {
-    await test.step("unable to count the elements " +logname, async () => { });
     }
 }
 

@@ -11,18 +11,16 @@ export class WindowType {
     get mostPopularSizesStyles () { return '//h5[text()="Most Popular Sizes/Styles"]' }
     get customWindowParts () { return '//h5[text()="Custom Window Parts"]' }
     get standardWindowParts () { return '//h5[text()="Standard Window Parts"]' }
-    get desingTabHightlighted () { return '//li[@class="active menards-design"]' }
     get productTypeMostPopular () { return '//h5[text()=\'Most Popular Sizes/Styles\']//parent::div/p/a' }
     get productCustomWindow () { return '//h5[text()="Custom Window Parts"]//parent::div/p/a' }
+    get productStandardWindow () { return '//h5[text()="Standard Window Parts"]//parent::div/p/a' }
+    
     
     async verifyUserName(firstName){
         await verifyText(this.page, this.userName, firstName, "User Name");
     }
 
-    async verifyDesignTabHighlighted(){
-        await verifyElementPresent(this.page, this.desingTabHightlighted, "Highlighted Design Tab")
-    }
-
+    
     async verifyProjectTypeOptions(){
         await verifyElementPresent(this.page, this.windowsWithNailingFlange, "Windows With Nailing Flange");
         await verifyElementPresent(this.page, this.windowsWithoutNailingFlange, "Windows Without Nailing Flange");
@@ -63,5 +61,8 @@ export class WindowType {
         await waitAndClick(this.page, this.productCustomWindow, "Custom Window Parts")
     }
 
+    async navigateToStandardWindowOptions(){
+        await waitAndClick(this.page, this.productStandardWindow, "Standard Window Parts")
+    }
 
 }

@@ -2,20 +2,20 @@ import {click, compareText, inputKeyboard, verifySubString, verifyLength, verify
     getText, waitAndClick, verifyText, verifyElementPresent, verifyElementAttribute, 
     countElement, sendKeys, simulateEnterKeyPress} from '../framework/actions.mjs';
 
+import { MainTabs } from './/maintabs.mjs'
+import { Summary } from './summary.mjs';
+
+
 export class MostPopular {
     constructor(page) {
         this.page = page;
     }
+
+    get summaryTab () { return '//a[contains(text(),"Summary")]' }
     get userName () { return '//li[@class="dropdown"]/a' }
     
     get desingTabHightlighted () { return '//li[@class="active menards-design"]' }
-    get summaryTab () { return '//a[text()="Summary"]' }
-    get summaryTabHightlighted () { return '//li[@class="active menards-summary"]' }
-    get closeSaveDesignPopup () { return '//form[@class="form-horizontal design-modal"]/div[@class="modal-header"]/button' }
-    get deleteItem() { return '//button[@title="Delete"]'}
-    get messageAfterDelete() { return '//p[text()="Click Continue Shopping to get started"]' }
-    get continueShoping() { return '//a[text()="Continue Shopping"]' }
-
+ 
     get searchSKUNumber () { return '//input[@placeholder="SKU Number"]'}
     get searchSKUDescription () { return '//input[@placeholder="SKU Description"]'}
     get searchButton ()  { return '//button[text() = "Search SKUs"]' }
@@ -38,16 +38,8 @@ export class MostPopular {
     get currentPageButton() { return '//a[contains(@aria-label, "current page")]/parent::li/a'}
     get pageBreak() { return '//li[@class="break"]'}
 
-    async navigatetToSummay(){
-        await click(this.page, this.summaryTab, "Summary Tab");
-        await this.page.waitForTimeout(3000);
-        await verifyElementPresent(this.page, this.summaryTabHightlighted, "Highlighted Summary Tab");
-    }
+    get closeSaveDesignPopup () { return '//form[@class="form-horizontal design-modal"]/div[@class="modal-header"]/button' }
 
-    
-    async verifyDesignTabHighlighted(){
-        await verifyElementPresent(this.page, this.desingTabHightlighted, "Highlighted Design Tab")
-    }
 
     async navigateToMostpopularOptions(){
         await click(this.page, this.productTypeMostPopular, "Most Popular Sizes/Styles")
@@ -59,11 +51,11 @@ export class MostPopular {
         await this.page.waitForTimeout(3000);
 
         await this.page.waitForSelector(this.skuRecords, { timeout: 10000 })    
-        //let recordCount = this.page.locator(this.skuRecords).count();
+        //let records = this.page.locator(this.skuRecords).count();
         await this.page.waitForTimeout(5000);
-        let recordCount = await this.page.$$("//table[@class='table table-hover table-condensed sku-grid']//tbody/tr");
+        let records = await this.page.$$("//table[@class='table table-hover table-condensed sku-grid']//tbody/tr");
 
-        for (let i=1; i<=recordCount.length; i++){
+        for (let i=1; i<=records.length; i++){
             
             let recordSKUNo = `//tbody/tr[${i}]/td[1]`
             let recordSKUDesc = `//tbody/tr[${i}]/td[2]`
@@ -133,14 +125,14 @@ export class MostPopular {
             await click(this.page, this.searchButton, "Search Button");
             await this.page.waitForTimeout(5000);
             await this.page.waitForSelector(this.skuRecords, { timeout: 10000 })    
-            //let recordCount = this.page.locator(this.skuRecords).count();
+            //let records = this.page.locator(this.skuRecords).count();
             await this.page.waitForTimeout(5000);
-            let recordCount = await this.page.$$("//table[@class='table table-hover table-condensed sku-grid']//tbody/tr");
-            if(recordCount.length == 0){
+            let records = await this.page.$$("//table[@class='table table-hover table-condensed sku-grid']//tbody/tr");
+            if(records.length == 0){
                 await test.step("No Record Found", async () => {
                 });
             }else{
-                for (let j=1; j<=recordCount.length; j++){
+                for (let j=1; j<=records.length; j++){
                     let recordSKUDesc = `//tbody/tr[${j}]/td[2]`
                     let actualSKUDesc = await this.page.locator(recordSKUDesc).innerText();
                     await verifySubString(actualSKUDesc, SKUDescriptions[i], 'SKU Descrption')
@@ -164,21 +156,17 @@ export class MostPopular {
     }
 
     async addSKU(){
+        await this.page.waitForTimeout(5000);
         let recordSKUDescValue = await this.page.locator(this.firstRecodSKUDesc).innerText();
         await click(this.page, this.firstRecodSKUAdd, "Add SKU");
-        await this.page.waitForTimeout(5000);
-        await this.navigatetToSummay();
+        await this.page.waitForTimeout(10000);
+        await click(this.page, this.summaryTab, "Summary tab")
         await waitAndClick(this.page, this.closeSaveDesignPopup, "Close save design form")
-        let summaryDescription = `//span[text() = ' ${recordSKUDescValue}']`;
+        let summaryDescription = `//span[contains(text(), '${recordSKUDescValue}')]`;
         await verifyElementPresent(this.page, summaryDescription, "SKU Description in Summary")
-    }
 
-    async deleteAndContinueShoping(){
-        await click(this.page, this.deleteItem, "Delete items");
-        await simulateEnterKeyPress(this.page);
-        // await this.page.waitForTimeout(5000);
-        await verifyElementPresent(this.page, this.messageAfterDelete, "Click on continue shoping")
-        await click(this.page, this.continueShoping, "Continmue Shoping");
-        await this.verifyDesignTabHighlighted();
-    }
+        // await new Summary(this.page).verifyItemOnSummary(recordSKUDescValue);
+     }
+
+   
 }

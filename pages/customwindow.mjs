@@ -8,15 +8,7 @@ export class CustomWindow {
     }
     get userName () { return '//li[@class="dropdown"]/a' }
 
-
-    async navigatetToSummay(){
-        await click(this.page, this.summaryTab, "Summary Tab");
-        await this.page.waitForTimeout(3000);
-        await verifyElementPresent(this.page, this.summaryTabHightlighted, "Highlighted Summary Tab");
-    }
-
-
-    async selectCustomeWindow(productType, windowType){
+    async selectCustomWindow(productType, windowType){
 
         let elemProjectType = `//label[text()="${productType}"]`;
         await click(this.page, elemProjectType, "Project Type");

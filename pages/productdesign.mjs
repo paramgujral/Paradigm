@@ -1,6 +1,6 @@
 import {click, scrollToElement, clickFirst, sendKeys, doubleClick} from '../framework/actions.mjs';
 
-export class WindowDesign {
+export class ProductDesign {
     constructor(page) {
         this.page = page;
     }
@@ -9,7 +9,8 @@ export class WindowDesign {
     get continue() { return '//button[text()="Continue"]'};
     get actualWidth () { return '//p[contains(text(),"Specify Actual size for width")]//following-sibling::div//input'};
     get actualHeight () { return '//p[contains(text(),"Specify Actual Opening size for height")]//following-sibling::div//input'};
-    get addToDesign() { return '//button[text() = "Add to Design"]'}
+    // get addToDesign() { return '//button[text() = "Add to Design"]'};
+    get addToDesign() { return '//button[@type="submit" and text() = "Add to Design"]'};
 
     async continueInformation(){
         await click(this.page, this.continueOnPopup, "Continue");
@@ -17,14 +18,14 @@ export class WindowDesign {
     }
 
     async designWindow(sizing, designOptions, glassOption, accessories){
-        await this.designWindowSize(sizing);
-        await this.designWindowOption(designOptions);
+        await this.designSizeAndStandard(sizing);
+        await this.designOption(designOptions);
         await this.designGlassOption(glassOption);
-        await this.designWindowAccessories(accessories);
+        await this.designAccessories(accessories);
 
     }
 
-    async designWindowSize(sizing){
+    async designSizeAndStandard (sizing){
         if(sizing.measurementType != undefined){
             let elemmeasurementType = `//div[text() = "${sizing.measurementType}"]`
             await click(this.page, elemmeasurementType, "Measurement Type");   
@@ -56,7 +57,7 @@ export class WindowDesign {
         await this.page.waitForTimeout(3000);
     }
 
-    async designWindowOption(designOption){
+    async designOption(designOption){
         if(designOption.exteriorFinishType != undefined){
             let elem = `//div[text() = "${designOption.exteriorFinishType}"]`
             await click(this.page, elem, "Exterior Finish Type");
@@ -95,8 +96,7 @@ export class WindowDesign {
 
         await clickFirst(this.page, this.continue, "Continue");
         await this.page.waitForTimeout(3000);
-        // await clickFirst(this.page, this.continue, "Continue");
-        // await this.page.waitForTimeout(3000);
+       
         
     }
 
@@ -125,7 +125,7 @@ export class WindowDesign {
 
     }
 
-    async designWindowAccessories(windowAccessories){
+    async designAccessories(windowAccessories){
         if(windowAccessories.screen != undefined){
             let elem = `//div[text() = "${windowAccessories.screen}"]`
             await click(this.page, elem, "Energy Rating");
@@ -155,6 +155,8 @@ export class WindowDesign {
             await clickFirst(this.page, elem, "Head Expander");
             await this.page.waitForTimeout(3000);
         }
+
+        await clickFirst(this.page, this.addToDesign, "Add to Design");
 
     }
     
